@@ -1,0 +1,63 @@
+1、create data
+2、create tensorflow structure start
+3、create tensorflow structure end
+4、sess.run()		# Very important
+
+
+#Session会话
+# method 1
+sess = tf.Session()
+result = sess.run(product)
+print(result)
+sess.close()
+# method 2
+with tf.Session() as sess:
+    result2 = sess.run(product)
+    print(result2) 
+	
+	
+创建变量：state = tf.Variable(0, name='counter')	
+更新变量：update = tf.assign(state, new_value)
+
+初始化
+	变量的初始化必须在模型的其它操作运行之前先明确地完成。最简单的方法就是添加一个给所有变量初始化的操作，并在使用模型之前首先运行那个操作。
+使用tf.initialize_all_variables()添加一个操作对变量做初始化。记得在完全构建好模型并加载之后再运行那个操作。
+
+传入值
+input1 = tf.placeholder(tf.float32)
+input2 = tf.placeholder(tf.float32)
+ouput = tf.mul(input1, input2)
+sess.run(ouput, feed_dict={input1: [7.], input2: [2.]})
+	
+保存和加载
+	最简单的保存和恢复模型的方法是使用tf.train.Saver对象。构造器给graph的所有变量，或是定义在列表里的变量，添加save和restoreops。saver对象
+提供了方法来运行这些ops，定义检查点文件的读写路径。	
+
+为什么通常Relu比sigmoid和tanh强，有什么不同？
+	主要是因为它们gradient特性不同。sigmoid和tanh的gradient在饱和区域非常平缓，接近于0，很容易造成vanishing gradient的问题，减缓收敛速度。
+vanishing gradient在网络层数多的时候尤其明显，是加深网络结构的主要障碍之一。相反，Relu的gradient大多数情况下是常数，有助于解决深层网络的
+收敛问题。Relu的另一个优势是在生物上的合理性，它是单边的，相比sigmoid和tanh，更符合生物神经元的特征。
+
+TensorBoard:可视化学习
+	通过向节点附加scalar_summary操作来分别输出学习速度和期望误差。然后你可以给每个 scalary_summary 分配一个有意义的 标签，比如 'learning 
+rate' 和 'loss function'。
+	SummaryWriter 的构造函数中包含了参数 logdir。这个 logdir 非常重要，所有事件都会写到它所指的目录下。
+tf.summary.scalar('loss', loss)
+writer = tf.summary.FileWriter('./logs/', sess.graph)
+result = sess.run(merged, feed_dict={xs: x_data, ys: y_data})
+writer.add_summary(result, i)
+
+Q:TensorFlow和Keras区别，各自优缺点
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
